@@ -1,0 +1,25 @@
+services:
+  giliover-streamlink:
+    container_name: giliover-streamlink
+    image: giliover-streamlink
+    stdin_open: true
+    tty: true
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=unix:/run/user/$UID/pulse/native
+    build:
+      context: .
+      dockerfile: ./Dockerfile.streamlink
+    network_mode: "host"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /run/user/$UID/pulse:/run/user/$UID/pulse
+      - /dev/snd:/dev/snd
+      - /run/dbus:/run/dbus
+      - /home/$USER/.mozilla:/home/ubuntu/.mozilla
+      - /home/$USER/.mozilla:/root/.mozilla
+    devices:
+      - /dev/snd
+      - /run/dbus
+    restart: no
